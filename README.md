@@ -1,5 +1,6 @@
 # 🦙🌲🤏 Alpaca-LoRA
 
+- 🤗 **使用Deepspeed方法微调**，[https://github.com/little51/alpaca-lora/tree/main/fine-tuning](https://github.com/little51/alpaca-lora/tree/main/fine-tuning)
 - 🤗 **Try the pretrained model out [here](https://huggingface.co/spaces/tloen/alpaca-lora), courtesy of a GPU grant from Huggingface!**
 - Users have created a Discord server for discussion and support [here](https://discord.gg/prbq284xX5)
 - 4/14: Chansung Park's GPT4-Alpaca adapters: https://github.com/tloen/alpaca-lora/issues/340
