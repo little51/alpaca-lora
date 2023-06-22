@@ -42,8 +42,11 @@ pip install accelerate -U
 ## 4、训练
 
 ```
-CUDA_VISIBLE_DEVICES=1,2 nohup \
-deepspeed  --master_port 12345 finetune.py \
+# 杀进程，用于中途要必参数重新训练
+pkill -9 -f  alpaca
+# 训练，如果指定具体的GPU，可用--include参数
+# 两块P100，用以下参数训练三轮，占用内存15G，需要96个小时
+nohup deepspeed --include localhost:1,2 --master_port 12345 finetune.py \
     --base_model ../model/llama_7b \
     --data_path ./fine-tuning/alpaca_gpt4_data_zh.json \
     --output_dir './lora-alpaca' \
