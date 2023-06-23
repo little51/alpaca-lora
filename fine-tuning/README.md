@@ -1,4 +1,4 @@
-# 使用deepspeed训练alpaca-lora
+# 使用deepspeed复现alpaca-lora
 
 ## 1、clone代码
 
@@ -68,15 +68,28 @@ nohup deepspeed --include localhost:1,2 --master_port 12345 finetune.py \
 tail -f alpaca.log
 ```
 
-## 5、常见问题
+## 5、测试
 
-### 5.1 基础模型
+可以用训练过程中生成的检查点来测试推理效果，如果用8位精度，大约需要9G以上显存。
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python generate.py \
+    --load_8bit \
+    --base_model ../model/llama_7b \
+    --lora_weights ./lora-alpaca/checkpoint-200
+```
+
+如果显存不足，可能会报ValueError: Expected a cuda device, but got: cpu错误，则设置CUDA_VISIBLE_DEVICES=-1，使用CPU测试推理，不过速度非常慢，只能用于测试，不适合用于生产。
+
+## 6、常见问题
+
+### 6.1 基础模型
 
  如果访问huggingface没有问题，可以用在线模型：--base_model 'decapoda-research/llama-7b-hf' 
 
 如果下载太慢，可以参考https://zhuanlan.zhihu.com/p/633469921的3.2节下载LLaMA原始模型然后转换为huggingface格式，放到本地文件夹中。
 
-### 5.2 bitsandbytes问题
+### 6.2 bitsandbytes问题
 
 bitsandbytes查找CUDA驱动的机制比较复杂，很多时候查错位置，结果没认出GPU，当成CPU用，会出别的问题，如果在微调时，参考fine-tuning/main.py，修改309、411行直接写成固定的路径，替换/anaconda3/envs/llama-lora/lib/python3.10/site-packages/bitsandbytes/cuda_setup下的main.py。
 
